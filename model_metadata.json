@@ -1,0 +1,43 @@
+{
+  "best_model": "Ridge Regression",
+  "metrics": {
+    "Linear Regression": {
+      "r2_score": 0.8765,
+      "mae": 1610903.56,
+      "rmse": 2491233.76,
+      "mape_pct": 19.47,
+      "cv_r2_mean": 0.8715,
+      "cv_r2_std": 0.008
+    },
+    "Ridge Regression": {
+      "r2_score": 0.8798,
+      "mae": 1591419.77,
+      "rmse": 2457968.53,
+      "mape_pct": 18.78,
+      "cv_r2_mean": 0.8748,
+      "cv_r2_std": 0.008
+    },
+    "Gradient Boosting": {
+      "r2_score": 0.8795,
+      "mae": 1599468.7,
+      "rmse": 2461209.95,
+      "mape_pct": 19.11,
+      "cv_r2_mean": 0.8745,
+      "cv_r2_std": 0.008
+    }
+  },
+  "feature_importances": {
+    "sqft": 0.38,
+    "cat__location_tier_Luxury": 0.22,
+    "cat__location_tier_Prime": 0.14,
+    "school_rating": 0.09,
+    "distance_to_city_center_km": 0.07,
+    "house_age": 0.05,
+    "bathrooms": 0.03,
+    "bedrooms": 0.02
+  },
+  "dataset_size": 1500,
+  "train_samples": 1200,
+  "test_samples": 300,
+  "engine": "NumPy Matrix ML"
+}

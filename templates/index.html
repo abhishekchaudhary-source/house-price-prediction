@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI House Price Predictor | Machine Learning Valuation System</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/styles.css?v=inr">
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+        <div class="globe globe-3"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <div class="brand">
+            <div class="brand-icon"><i class="fa-solid fa-house-laptop"></i></div>
+            <div class="brand-text">
+                <span class="brand-title">Estimator<span class="highlight">AI</span></span>
+                <span class="brand-subtitle">ML-Powered Real Estate Valuation</span>
+            </div>
+        </div>
+        <div class="nav-badges">
+            <span class="badge badge-glow" id="best-model-badge"><i class="fa-solid fa-microchip"></i> Model: Loading...</span>
+            <span class="badge badge-accuracy" id="accuracy-badge"><i class="fa-solid fa-bullseye"></i> Accuracy R²: ...</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Real-Time Intelligent <span class="gradient-text">House Valuation</span></h1>
+            <p class="hero-desc">Powered by multi-algorithm machine learning (Gradient Boosting, Random Forest, & Ridge Regression). Adjust home features below for instant market price estimation.</p>
+            
+            <!-- Quick Preset Selectors -->
+            <div class="presets-container">
+                <span class="preset-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Presets:</span>
+                <div class="preset-chips" id="preset-chips">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Calculator & Results Grid -->
+        <div class="main-grid">
+            <!-- Left Side: Interactive Input Controls -->
+            <section class="card glass-card input-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-sliders"></i> Property Specifications</h2>
+                    <button type="button" class="btn-secondary btn-sm" id="btn-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                </div>
+
+                <form id="prediction-form" class="form-grid">
+                    <!-- Square Footage -->
+                    <div class="form-group full-width">
+                        <div class="form-label-row">
+                            <label for="sqft"><i class="fa-solid fa-ruler-combined"></i> Living Area (Sq Ft)</label>
+                            <span class="value-badge" id="val-sqft">3,000 sq ft</span>
+                        </div>
+                        <input type="range" id="sqft" name="sqft" min="600" max="6000" step="50" value="3000" class="custom-slider">
+                    </div>
+
+                    <!-- Location Tier -->
+                    <div class="form-group">
+                        <label for="location_tier"><i class="fa-solid fa-location-dot"></i> Location Tier</label>
+                        <select id="location_tier" name="location_tier" class="custom-select">
+                            <option value="Budget">Economy / Rural (₹)</option>
+                            <option value="Suburban" selected>Suburban Neighborhood (₹₹)</option>
+                            <option value="Urban">Metro City (₹₹₹)</option>
+                            <option value="Prime">Prime Waterfront / District (₹₹₹₹)</option>
+                            <option value="Luxury">Ultra Luxury Estate (₹₹₹₹₹)</option>
+                        </select>
+                    </div>
+
+                    <!-- Bedrooms -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="bedrooms"><i class="fa-solid fa-bed"></i> Bedrooms</label>
+                            <span class="value-badge" id="val-bedrooms">3</span>
+                        </div>
+                        <input type="range" id="bedrooms" name="bedrooms" min="1" max="6" step="1" value="3" class="custom-slider">
+                    </div>
+
+                    <!-- Bathrooms -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="bathrooms"><i class="fa-solid fa-bath"></i> Bathrooms</label>
+                            <span class="value-badge" id="val-bathrooms">2.5</span>
+                        </div>
+                        <input type="range" id="bathrooms" name="bathrooms" min="1" max="5" step="0.5" value="2.5" class="custom-slider">
+                    </div>
+
+                    <!-- Year Built -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="year_built"><i class="fa-solid fa-calendar-days"></i> Year Built</label>
+                            <span class="value-badge" id="val-year_built">2015</span>
+                        </div>
+                        <input type="range" id="year_built" name="year_built" min="1950" max="2025" step="1" value="2015" class="custom-slider">
+                    </div>
+
+                    <!-- School Rating -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="school_rating"><i class="fa-solid fa-graduation-cap"></i> School Quality (1-10)</label>
+                            <span class="value-badge" id="val-school_rating">8.0</span>
+                        </div>
+                        <input type="range" id="school_rating" name="school_rating" min="1" max="10" step="0.5" value="8.0" class="custom-slider">
+                    </div>
+
+                    <!-- Distance to City Center -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="distance_to_city_center_km"><i class="fa-solid fa-city"></i> City Center Dist (km)</label>
+                            <span class="value-badge" id="val-distance">8.5 km</span>
+                        </div>
+                        <input type="range" id="distance_to_city_center_km" name="distance_to_city_center_km" min="0.5" max="35" step="0.5" value="8.5" class="custom-slider">
+                    </div>
+
+                    <!-- Garage Spaces -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="garage_cars"><i class="fa-solid fa-car"></i> Garage Capacity</label>
+                            <span class="value-badge" id="val-garage">2 Cars</span>
+                        </div>
+                        <input type="range" id="garage_cars" name="garage_cars" min="0" max="4" step="1" value="2" class="custom-slider">
+                    </div>
+
+                    <!-- Lot Size -->
+                    <div class="form-group">
+                        <div class="form-label-row">
+                            <label for="lot_size_sqft"><i class="fa-solid fa-vector-square"></i> Lot Size (Sq Ft)</label>
+                            <span class="value-badge" id="val-lot">5,500 sq ft</span>
+                        </div>
+                        <input type="range" id="lot_size_sqft" name="lot_size_sqft" min="1000" max="25000" step="500" value="5500" class="custom-slider">
+                    </div>
+
+                    <!-- Renovated Switch -->
+                    <div class="form-group full-width switch-group">
+                        <label class="switch-label">
+                            <span><i class="fa-solid fa-hammer"></i> Major Renovation (Last 10 yrs)</span>
+                        </label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="renovated" name="renovated" value="1">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Right Side: Valuation Display & Insights -->
+            <section class="results-column">
+                <!-- Main Prediction Output Card -->
+                <div class="card glass-card prediction-card glow-border">
+                    <div class="card-tag"><i class="fa-solid fa-chart-line"></i> ESTIMATED MARKET VALUE</div>
+                    <div class="price-display">
+                        <span class="currency-symbol">₹</span>
+                        <span id="predicted-price-value" class="price-number">---,---</span>
+                    </div>
+
+                    <div class="valuation-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Est. Range (90% Conf.)</span>
+                            <span class="meta-val" id="price-range">₹--- - ₹---</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Price / Sq Ft</span>
+                            <span class="meta-val" id="price-per-sqft">₹---</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Est. Monthly EMI</span>
+                            <span class="meta-val highlight-green" id="mortgage-est">₹---/mo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Importance Chart Card -->
+                <div class="card glass-card chart-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-chart-bar"></i> Key Pricing Drivers (Feature Importance)</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="importanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Model Comparison & ML Benchmark Dashboard Section -->
+        <section class="benchmark-section card glass-card">
+            <div class="card-header">
+                <div>
+                    <h2><i class="fa-solid fa-square-poll-vertical"></i> ML Model Benchmark & Algorithm Comparison</h2>
+                    <p class="section-subtext">5 Machine Learning regression models trained and cross-validated on housing data.</p>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="benchmark-table" id="benchmark-table">
+                    <thead>
+                        <tr>
+                            <th>Model Algorithm</th>
+                            <th>R² Score</th>
+                            <th>MAE (₹)</th>
+                            <th>RMSE (₹)</th>
+                            <th>5-Fold CV R²</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="benchmark-table-body">
+                        <!-- Loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Built with <i class="fa-solid fa-heart gradient-text"></i> using Python 3.14, Scikit-Learn, Pandas & Flask</p>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="/static/app.js?v=inr"></script>
+</body>
+</html>
