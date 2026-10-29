@@ -16,8 +16,12 @@
     <!-- Chart.js for visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- Leaflet CSS & JS for Interactive Geospatial Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/styles.css?v=inr">
+    <link rel="stylesheet" href="/static/styles.css?v=bengaluru-map">
 </head>
 <body>
     <div class="background-globes">
@@ -52,6 +56,54 @@
                 <span class="preset-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Presets:</span>
                 <div class="preset-chips" id="preset-chips">
                     <!-- Loaded dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Geospatial Address & Interactive Bengaluru Map Section -->
+        <section class="card glass-card map-section-card">
+            <div class="card-header">
+                <div>
+                    <h2><i class="fa-solid fa-map-location-dot"></i> Bengaluru Geospatial & Address Navigator</h2>
+                    <p class="section-subtext">Click anywhere on Bengaluru, drag the pin marker, or select a locality. Distance to CBD (MG Road / Vidhana Soudha) and price tier auto-compute in real-time.</p>
+                </div>
+                <div class="map-badges">
+                    <span class="badge badge-glow" id="map-locality-badge"><i class="fa-solid fa-location-crosshairs"></i> Locality: Whitefield</span>
+                    <span class="badge badge-accuracy" id="map-tier-badge"><i class="fa-solid fa-layer-group"></i> Tier: Urban</span>
+                </div>
+            </div>
+
+            <!-- Address Search & Locality Quick Picker -->
+            <div class="address-search-bar">
+                <div class="search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="address-search-input" placeholder="Search Bengaluru address, society, or landmark (e.g. Indiranagar, Manyata Tech Park)..." class="custom-input">
+                    <button type="button" id="btn-search-address" class="btn-primary btn-sm"><i class="fa-solid fa-compass"></i> Search</button>
+                </div>
+                <div class="locality-select-wrapper">
+                    <label for="locality_select"><i class="fa-solid fa-city"></i> Locality:</label>
+                    <select id="locality_select" class="custom-select">
+                        <option value="">Select Bengaluru Locality...</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Leaflet Map Container -->
+            <div class="map-wrapper">
+                <div id="bengaluru-map" class="leaflet-map-container"></div>
+                <div class="map-overlay-stats">
+                    <div class="overlay-stat-item">
+                        <span class="stat-title"><i class="fa-solid fa-road"></i> CBD Distance (MG Road)</span>
+                        <span class="stat-val highlight-cyan" id="overlay-distance">18.5 km</span>
+                    </div>
+                    <div class="overlay-stat-item">
+                        <span class="stat-title"><i class="fa-solid fa-crosshairs"></i> GPS Coordinates</span>
+                        <span class="stat-val" id="overlay-coords">12.9698° N, 77.7499° E</span>
+                    </div>
+                    <div class="overlay-stat-item">
+                        <span class="stat-title"><i class="fa-solid fa-tag"></i> Market Pricing Category</span>
+                        <span class="stat-val highlight-green" id="overlay-tier">Urban IT Corridor</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -187,6 +239,14 @@
                             <span class="meta-val highlight-green" id="mortgage-est">₹---/mo</span>
                         </div>
                     </div>
+                    <div class="report-action-box">
+                        <button type="button" class="btn-download-pdf" id="btn-download-report">
+                            <i class="fa-solid fa-file-pdf"></i> Download Official Appraisal PDF
+                        </button>
+                        <button type="button" class="btn-secondary btn-lead" id="btn-open-lead-modal">
+                            <i class="fa-solid fa-user-tie"></i> Connect with Bangalore Property Expert
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Feature Importance Chart Card -->
@@ -230,12 +290,47 @@
         </section>
     </main>
 
+    <!-- Expert Consultation / Lead Capture Modal -->
+    <div id="lead-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-card glass-card glow-border">
+            <div class="modal-header">
+                <div>
+                    <h3><i class="fa-solid fa-handshake"></i> Request Property Consultation</h3>
+                    <p class="modal-subtext">Get a callback from a verified Bengaluru real estate advisor for this property.</p>
+                </div>
+                <button type="button" class="btn-close-modal" id="btn-close-lead-modal">&times;</button>
+            </div>
+            <form id="lead-form" class="lead-form">
+                <div class="form-group">
+                    <label for="lead_name"><i class="fa-solid fa-user"></i> Full Name</label>
+                    <input type="text" id="lead_name" required placeholder="e.g. Vikram Malhotra" class="custom-input">
+                </div>
+                <div class="form-group">
+                    <label for="lead_phone"><i class="fa-solid fa-phone"></i> Mobile Number (10 digits)</label>
+                    <input type="tel" id="lead_phone" required placeholder="e.g. 9876543210" class="custom-input">
+                </div>
+                <div class="form-group">
+                    <label for="lead_email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                    <input type="email" id="lead_email" required placeholder="e.g. vikram@example.com" class="custom-input">
+                </div>
+                <div class="lead-property-preview">
+                    <span class="preview-label">Estimated Valuation Snapshot:</span>
+                    <strong id="lead-summary-text">Whitefield | 1,800 sq ft | ₹---</strong>
+                </div>
+                <button type="submit" class="btn-primary btn-submit-lead" id="btn-submit-lead">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Inquiry
+                </button>
+                <div id="lead-form-msg" class="lead-msg"></div>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <p>Built with <i class="fa-solid fa-heart gradient-text"></i> using Python 3.14, Scikit-Learn, Pandas & Flask</p>
     </footer>
 
     <!-- Custom JS -->
-    <script src="/static/app.js?v=inr"></script>
+    <script src="/static/app.js?v=prod"></script>
 </body>
 </html>

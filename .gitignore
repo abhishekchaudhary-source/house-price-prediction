@@ -8,3 +8,8 @@ env/
 .DS_Store
 .vscode/
 .idea/
+
+# Environment secrets & local database
+.env
+*.db
+*.sqlite3

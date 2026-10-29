@@ -1,29 +1,45 @@
 {
-  "best_model": "Ridge Regression",
+  "best_model": "Random Forest",
   "metrics": {
     "Linear Regression": {
-      "r2_score": 0.8765,
-      "mae": 1610903.56,
-      "rmse": 2491233.76,
-      "mape_pct": 19.47,
-      "cv_r2_mean": 0.8715,
-      "cv_r2_std": 0.008
+      "r2_score": 0.7728,
+      "mae": 2430593.42,
+      "rmse": 5928022.19,
+      "mape_pct": 23.37,
+      "cv_r2_mean": 0.7894,
+      "cv_r2_std": 0.0093
     },
     "Ridge Regression": {
-      "r2_score": 0.8798,
-      "mae": 1591419.77,
-      "rmse": 2457968.53,
-      "mape_pct": 18.78,
-      "cv_r2_mean": 0.8748,
-      "cv_r2_std": 0.008
+      "r2_score": 0.7727,
+      "mae": 2427597.56,
+      "rmse": 5929192.61,
+      "mape_pct": 23.34,
+      "cv_r2_mean": 0.7896,
+      "cv_r2_std": 0.0096
+    },
+    "Lasso Regression": {
+      "r2_score": 0.7728,
+      "mae": 2430549.4,
+      "rmse": 5927914.85,
+      "mape_pct": 23.37,
+      "cv_r2_mean": 0.7894,
+      "cv_r2_std": 0.0093
+    },
+    "Random Forest": {
+      "r2_score": 0.8803,
+      "mae": 1739818.04,
+      "rmse": 4303235.36,
+      "mape_pct": 14.22,
+      "cv_r2_mean": 0.834,
+      "cv_r2_std": 0.0195
     },
     "Gradient Boosting": {
-      "r2_score": 0.8795,
-      "mae": 1599468.7,
-      "rmse": 2461209.95,
-      "mape_pct": 19.11,
-      "cv_r2_mean": 0.8745,
-      "cv_r2_std": 0.008
+      "r2_score": 0.8786,
+      "mae": 1748052.56,
+      "rmse": 4334343.53,
+      "mape_pct": 14.73,
+      "cv_r2_mean": 0.8266,
+      "cv_r2_std": 0.0434
     }
   },
   "feature_importances": {
@@ -36,8 +52,8 @@
     "bathrooms": 0.03,
     "bedrooms": 0.02
   },
-  "dataset_size": 1500,
-  "train_samples": 1200,
-  "test_samples": 300,
-  "engine": "NumPy Matrix ML"
+  "dataset_size": 12315,
+  "train_samples": 9852,
+  "test_samples": 2463,
+  "engine": "Scikit-Learn"
 }
